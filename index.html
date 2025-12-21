@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeToPlay Tracker | API + LocalStorage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Portal FreeToGame</h1>
+        <p>Marca tus juegos: 🟣 Jugados | 🟠 Pendientes</p>
+        
+        <div class="controls">
+            <button class="btn-filter active" onclick="filtrarJuegos('all')">Todos</button>
+            <button class="btn-filter" onclick="filtrarJuegos('Shooter')">Shooter</button>
+            <button class="btn-filter" onclick="filtrarJuegos('MMORPG')">MMORPG</button>
+            <button class="btn-filter" onclick="filtrarJuegos('Strategy')">Estrategia</button>
+            <button class="btn-filter" onclick="filtrarJuegos('Racing')">Carreras</button>
+        </div>
+    </header>
+
+    <div id="loading">Cargando datos de la API...</div>
+    <div class="game-container" id="contenedor-juegos">
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+:root {
+    --bg-dark: #0b0c10;
+    --bg-card: #1f2833;
+    --neon-blue: #66fcf1;
+    --neon-green: #45a29e;
+    --neon-purple: #c586c0;
+    --neon-orange: #ce9178;
+    --text-main: #c5c6c7;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { 
+    font-family: 'Roboto', sans-serif; 
+    background-color: var(--bg-dark); 
+    color: var(--text-main);
+}
+
+header {
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--neon-blue);
+}
+
+h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 3.5rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px var(--neon-blue);
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-filter {
+    background: transparent;
+    border: 1px solid var(--neon-green);
+    color: var(--neon-green);
+    padding: 10px 25px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-filter:hover, .btn-filter.active {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.game-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+}
+
+.card.estado-jugado { border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(197, 134, 192, 0.3); }
+.card.estado-pendiente { border-color: var(--neon-orange); box-shadow: 0 0 15px rgba(206, 145, 120, 0.3); }
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-body { 
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+}
+
+.card-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.6rem;
+    color: white;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.badge {
+    background: rgba(0,0,0,0.5);
+    color: var(--neon-blue);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 1px solid var(--neon-blue);
+    align-self: flex-start;
+    box-shadow: 0 0 5px rgba(102, 252, 241, 0.2);
+}
+
+.card-desc {
+    font-size: 0.95rem;
+    color: #a0a0a0;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+}
+
+.status-select {
+    background: #111;
+    color: white;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    margin-top: auto;
+}
+
+.status-select:focus { outline: none; border-color: var(--neon-blue); }
+
+.play-link {
+    display: block;
+    color: var(--neon-blue);
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    text-align: center;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+.play-link:hover {
+    color: var(--neon-green);
+    text-shadow: 0 0 8px var(--neon-green);
+}
+
+#loading {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 50px;
+    color: var(--neon-blue);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink { 50% { opacity: 0.5; } }
