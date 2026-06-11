@@ -3,7 +3,6 @@ let misEstados = JSON.parse(localStorage.getItem('misJuegosEstados')) || {};
 let misFavoritos = JSON.parse(localStorage.getItem('misJuegosFavoritos')) || {};
 let misRatings = JSON.parse(localStorage.getItem('misJuegosRatings')) || {};
 
-// Cargar la API KEY de config.js (si existe) o de localStorage
 let API_KEY = "";
 if (typeof CONFIG_API_KEY !== 'undefined') {
     API_KEY = CONFIG_API_KEY;
@@ -18,9 +17,7 @@ let favoritoActivo = false;
 let textoBusqueda = '';
 let modalJuegoId = null;
 
-// CARGA DE JUEGOS DESDE LA API (3 páginas en serie para totalizar 120 juegos)
 async function obtenerJuegos() {
-    // Si no tenemos clave de API configurada, mostramos un formulario en pantalla
     if (API_KEY === "") {
         mostrarFormularioApiKey();
         return;
@@ -36,7 +33,6 @@ async function obtenerJuegos() {
             }
         }
         
-        // Filtrar duplicados manualmente
         todosLosJuegos = [];
         for (let i = 0; i < temporal.length; i++) {
             let j = temporal[i];
@@ -57,7 +53,6 @@ async function obtenerJuegos() {
     }
 }
 
-// ACTUALIZAR ESTADÍSTICAS DEL COMPONENT PANEL
 function actualizarDashboard() {
     let total = todosLosJuegos.length;
     let pendientes = 0;
@@ -81,7 +76,6 @@ function actualizarDashboard() {
     document.getElementById('progress-fill').style.width = porcentaje + "%";
 }
 
-// DIBUJAR LAS TARJETAS EN EL CONTENEDOR HTML
 function mostrarJuegos(lista) {
     contenedor.innerHTML = '';
     if (lista.length === 0) {
@@ -122,7 +116,6 @@ function mostrarJuegos(lista) {
     }
 }
 
-// LÓGICA DE FILTRADOS Y ORDENACIONES
 function filtrarYMostrar() {
     let filtrados = [];
     for (let i = 0; i < todosLosJuegos.length; i++) {
@@ -169,7 +162,6 @@ function filtrarYMostrar() {
     mostrarJuegos(filtrados);
 }
 
-// EVENTOS DE CONTROL EN LA INTERFAZ
 function filtrarJuegos(cat, el) {
     categoriaActual = cat;
     favoritoActivo = false;
@@ -208,7 +200,6 @@ function ordenarJuegos() {
     filtrarYMostrar();
 }
 
-// GESTIÓN DE FAVORITOS
 function toggleFavorito(id, event) {
     if (event) event.stopPropagation();
     if (misFavoritos[id] === true) {
@@ -226,7 +217,6 @@ function toggleFavorito(id, event) {
     if (favoritoActivo === true) filtrarYMostrar();
 }
 
-// GESTIÓN DE ESTADOS DE JUEGOS
 function cambiarEstado(id, val) {
     if (val === 'sin_estado') delete misEstados[id];
     else misEstados[id] = val;
@@ -249,7 +239,6 @@ function cambiarEstado(id, val) {
     }
 }
 
-// DETALLES EN MODAL (Carga solo descripción y plataformas)
 async function abrirModal(id) {
     modalJuegoId = id;
     let modal = document.getElementById('game-modal');
@@ -263,7 +252,6 @@ async function abrirModal(id) {
     document.getElementById('modal-platforms').innerHTML = '';
     document.getElementById('modal-banner').style.backgroundImage = 'none';
 
-    // Cargar estrellas guardadas
     ponerEstrellas(misRatings[id] || 0);
 
     let juegoLocal = null;
@@ -285,7 +273,6 @@ async function abrirModal(id) {
         if (res.ok) {
             let detalles = await res.json();
             
-            // 1. Desarrolladores
             let devs = "No disponible";
             if (detalles.developers && detalles.developers.length > 0) {
                 let devNames = [];
@@ -295,7 +282,6 @@ async function abrirModal(id) {
                 devs = devNames.join(", ");
             }
 
-            // 2. Editoriales / Distribuidores
             let pubs = "No disponible";
             if (detalles.publishers && detalles.publishers.length > 0) {
                 let pubNames = [];
@@ -305,25 +291,21 @@ async function abrirModal(id) {
                 pubs = pubNames.join(", ");
             }
 
-            // 3. Metacritic
             let meta = "No disponible";
             if (detalles.metacritic !== null && detalles.metacritic !== undefined) {
                 meta = detalles.metacritic + " / 100";
             }
 
-            // 4. Clasificación ESRB
             let esrb = "Sin clasificación";
             if (detalles.esrb_rating !== null && detalles.esrb_rating !== undefined) {
                 esrb = detalles.esrb_rating.name;
             }
 
-            // 5. Sitio Web Oficial
             let webHTML = "No disponible";
             if (detalles.website) {
                 webHTML = '<a href="' + detalles.website + '" target="_blank">Visitar sitio web ↗</a>';
             }
 
-            // Renderizamos la ficha técnica en el HTML
             document.getElementById('modal-specs').innerHTML = `
                 <div class="spec-item">
                     <span class="spec-label">Desarrollador</span>
@@ -373,7 +355,6 @@ window.onclick = function (event) {
     if (event.target === modal) cerrarModal();
 };
 
-// VALORACIÓN POR ESTRELLAS
 function ponerEstrellas(cantidad) {
     let stars = document.querySelectorAll('#stars-container .star');
     for (let i = 0; i < stars.length; i++) {
@@ -391,7 +372,6 @@ function ponerEstrellas(cantidad) {
     };
     document.getElementById('rating-label').textContent = labels[cantidad] || 'Sin calificar';
     
-    // Guardar puntuación automáticamente al dar clic
     if (modalJuegoId !== null) {
         if (cantidad > 0) {
             misRatings[modalJuegoId] = cantidad;
@@ -402,7 +382,6 @@ function ponerEstrellas(cantidad) {
     }
 }
 
-// TOAST NOTIFICATIONS
 function showToast(mensaje, tipo) {
     let container = document.getElementById('toast-container');
     let toast = document.createElement('div');
@@ -422,7 +401,6 @@ function showToast(mensaje, tipo) {
     }, 2500);
 }
 
-// MOSTRAR FORMULARIO SI NO HAY API KEY CONFIGURADA
 function mostrarFormularioApiKey() {
     let loadingDiv = document.getElementById('loading');
     loadingDiv.innerHTML = `
@@ -436,7 +414,6 @@ function mostrarFormularioApiKey() {
     `;
 }
 
-// GUARDAR LA CLAVE EN LOCALSTORAGE Y RECARGAR LA PÁGINA
 function guardarApiKey() {
     let inputVal = document.getElementById('api-key-input').value.trim();
     if (inputVal === "") {
